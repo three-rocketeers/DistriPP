@@ -22,10 +22,12 @@
 
             <div class="form-group">
                 <label for="list">Stories:</label>
-                <!-- TODO how can the user see that there will be a list here... -->
+                <!-- TODO make list scrollable after 4 items are displayed -->
                 <div class="list">
                     <ul class="list-group" id="list-items"></ul>
                 </div>
+            </div>
+            <div class="form-group">
                 <div class="new-item input-group">
                     <input type="text" class="form-control" placeholder="Enter User Story Number (e.g. IRA-1234)"
                            id="new-item">
@@ -35,6 +37,7 @@
                 </div>
                 <small id="storiesHelp" class="form-text text-muted">Enter the stories that will be planned.</small>
             </div>
+
             <!-- TODO create better place for all warnings and errors -->
             <div class="form-group error alert alert-danger collapse"></div>
             <div class="form-group">
