@@ -1,5 +1,9 @@
 {% extends "layout.html" %}
 {% block title %}Create{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/listfunctions.js') }}"></script>
+{% endblock %}
 {% block content %}
 
     <div class="container">
@@ -15,19 +19,24 @@
                     knows what the planning is about
                 </small>
             </div>
-            <!-- TODO this needs to be a list where you can add stuff -->
+
             <div class="form-group">
                 <label for="list">Stories:</label>
-                <div class="list-group" id="list">
-                    <a href="#" class="list-group-item list-group-item-action active">
-                        Cras justo odio
-                    </a>
-                    <a href="#" class="list-group-item list-group-item-action">Dapibus ac facilisis in</a>
-                    <a href="#" class="list-group-item list-group-item-action">Morbi leo risus</a>
-                    <a href="#" class="list-group-item list-group-item-action">Porta ac consectetur ac</a>
-                    <a href="#" class="list-group-item list-group-item-action disabled">Vestibulum at eros</a>
+                <!-- TODO how can the user see that there will be a list here... -->
+                <div class="list">
+                    <ul class="list-group" id="list-items"></ul>
                 </div>
+                <div class="new-item input-group">
+                    <input type="text" class="form-control" placeholder="Enter User Story Number (e.g. IRA-1234)"
+                           id="new-item">
+                    <span class="input-group-btn">
+                        <button type=button id="listadd" class="btn btn-primary">Add Story</button>
+                    </span>
+                </div>
+                <small id="storiesHelp" class="form-text text-muted">Enter the stories that will be planned.</small>
             </div>
+            <!-- TODO create better place for all warnings and errors -->
+            <div class="form-group error alert alert-danger collapse"></div>
             <div class="form-group">
                 <label for="passwordbox">Password:</label>
                 <input type="password" class="form-control" id="passwordbox" placeholder="Password">
@@ -36,7 +45,9 @@
                     planning.
                 </small>
             </div>
-            <button type="submit" class="btn btn-primary">Create</button>
+
+            <button type="submit" class="btn btn-primary btn-block">Create Planning</button>
+
         </form>
     </div>
 {% endblock %}
