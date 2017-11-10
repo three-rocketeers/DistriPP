@@ -1,33 +1,40 @@
 {% extends "layout.html" %}
 {% block title %}Home{% endblock %}
 {% block content %}
+    <div class="jumbotron">
+    </div>
+    <div class="container">
+        <div class="row equal">
+            <div class="col-lg-4">
+                <h2>Create Planning</h2>
+                <p>This allows you to create a distributed planning meeting. This option is meant for Scrummasters
+                    setting up planning meetings for an upcoming sprint. </p>
 
-        <!-- Main jumbotron for a primary marketing message or call to action -->
-        <div class="jumbotron">
-            <div class="container">
-                <h1 class="display-3">The sprint is dark and full of stories!</h1>
+            </div>
+            <div class="col-lg-4">
+                <h2>Join Planning</h2>
+                <p>Join a created planning meeting and estimate. This option is meant for team members which will be
+                    working on the planned increment. </p>
+
+            </div>
+            <div class="col-lg-4">
+                <h2>View Planning</h2>
+                <p>Allows you to view the results of a planning meeting. If you know the password :)</p>
+
             </div>
         </div>
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h2>Create Planning</h2>
-                    <p>This allows you to create a distributed planning meeting. This option is meant for Scrummasters
-                        setting up planning meetings for an upcoming sprint. </p>
-                    <p><a class="btn btn-secondary" href="{{ url_for('create') }}" role="button">Create &raquo;</a></p>
-                </div>
-                <div class="col-md-4">
-                    <h2>Join Planning</h2>
-                    <p>Join a created planning meeting and estimate. This option is meant for team members which will be
-                        working on the planned increment. </p>
-                    <p><a class="btn btn-secondary" href="#" role="button">Join &raquo;</a></p>
-                </div>
-                <div class="col-md-4">
-                    <h2>View Planning</h2>
-                    <p>Allows you to view the results of a planning meeting. If you know the password :)</p>
-                    <p><a class="btn btn-secondary" href="#" role="button">View &raquo;</a></p>
-                </div>
+        <!-- TODO this doesnt work when going on small screens. Figure out a way to keep the buttons in one row-->
+        <div class="row">
+            <div class="col-lg-4">
+                <p><a class="btn btn-block btn-secondary" href="{{ url_for('create') }}" role="button">Create</a></p>
             </div>
-        </div><!-- /container -->
+            <div class="col-lg-4">
+                <p><a class="btn btn-block btn-secondary" href="#" role="button">Join</a></p>
+            </div>
+            <div class="col-lg-4">
+                <p><a class="btn btn-block btn-secondary" href="#" role="button">View</a></p>
+            </div>
+        </div>
+    </div><!-- /container -->
 
 {% endblock %}
