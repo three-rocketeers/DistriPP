@@ -10,7 +10,7 @@
 
         <h1>Create Planning</h1>
         <p>Fill out all the boxes to create a planning event.</p>
-        <form>
+        <form action="{{ url_for('create_planning') }}" method="post">
             <div class="form-group">
                 <label for="title">Planning Name:</label>
                 <input type="text" class="form-control" id="title" placeholder="Enter planning name">

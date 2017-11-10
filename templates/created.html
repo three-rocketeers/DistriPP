@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}Create{% endblock %}
+{% block content %}
+    <div class="container">
+
+        <h1>Planning created!</h1>
+
+        <p>Your planning meeting was created with the following ID</p>
+        <div class="alert alert-primary" role="alert"><strong>{{ planning_id }}</strong></div>
+        <p><i class="fa fa-exclamation-circle" aria-hidden="true"></i> Do not lose this ID as you will not be able to
+            recover it!</p>
+        <a class="btn btn-primary" href="{{ url_for('start') }}" role="button">OK, I have written it down!</a>
+    </div>
+
+{% endblock %}
