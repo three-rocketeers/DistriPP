@@ -19,3 +19,8 @@ html, body {
     background: #1c1c1c url("../img/banner.png") no-repeat center;
     min-height: 250px;
 }
+
+.no-border {
+    border: 0;
+    box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
+}
