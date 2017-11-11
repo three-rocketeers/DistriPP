@@ -6,7 +6,8 @@ This will allow for teams to do estimates in a distribute way.
 
 Clone Git Repo.
 Install MariaDB.
-Create database "distipp" and run the V1_init.sql file (flywaw coming in future release)
+Run the V1_init.sql file in your SQL editor of choice (flyway coming in future release)
+Change the config.py file to match your setup
 Run app.py
 
 ### Prerequisites
