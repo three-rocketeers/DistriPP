@@ -1,0 +1,4 @@
+Flask
+Jinja2
+Werkzeug
+mysql-connector==2.1.6
