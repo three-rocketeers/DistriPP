@@ -17,7 +17,8 @@ $(document).ready(function () {
          }
          */
         if (userInput) {
-            $('#list-items').append("<li class='list-group-item'><input class='no-border' type='text' name='stories' readonly value='" + userInput + "'><i class='fa fa-trash float-right' aria-hidden='true'></i>" + "</li>");
+            $('#list-items').append('<div class="input-group"> <input type="text" class="form-control" name="stories" value="' + userInput + '" aria-label="story"> <span class="input-group-btn"> <button class="btn btn-secondary" type="button"><i class="fa fa-trash float-right" aria-hidden="true"></i></button> </span> </div>');
+            //$('#list-items').append("<li class='list-group-item'><input class='no-border' type='text' name='stories' readonly value='" + userInput + "'><i class='fa fa-trash float-right' aria-hidden='true'></i>" + "</li>");
         }
 
         $('#new-item').val("");
