@@ -24,3 +24,13 @@ html, body {
     border: 0;
     box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
 }
+
+.scrollable-storylist{
+    min-height: 150px;
+    max-height: 150px;
+    overflow-y:scroll;
+}
+
+.storylist-item{
+    padding: 5px;
+}
