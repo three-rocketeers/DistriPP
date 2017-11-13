@@ -1,5 +1,12 @@
 $(document).ready(function () {
 
+
+    //remove list item on click of trash icon
+    $(document).on('click', '#remove', function () {
+        $(this).closest("div").remove();
+        console.log("Removing item", $(this).closest("div"));
+    });
+
     //on click
     $('#listadd').click(function () {
 
@@ -17,7 +24,7 @@ $(document).ready(function () {
          }
          */
         if (userInput) {
-            $('#list-items').append('<div class="input-group"> <input type="text" class="form-control" name="stories" value="' + userInput + '" aria-label="story"> <span class="input-group-btn"> <button class="btn btn-secondary" type="button"><i class="fa fa-trash float-right" aria-hidden="true"></i></button> </span> </div>');
+            $('#list-items').append('<div class="input-group storylist-item"> <input type="text" class="form-control" name="stories" value="' + userInput + '" aria-label="story"> <span class="input-group-btn" > <button class="btn btn-secondary"  id="remove" type="button"><i class="fa fa-trash" aria-hidden="true"></i></button> </span> </div>');
             //$('#list-items').append("<li class='list-group-item'><input class='no-border' type='text' name='stories' readonly value='" + userInput + "'><i class='fa fa-trash float-right' aria-hidden='true'></i>" + "</li>");
         }
 
@@ -26,11 +33,6 @@ $(document).ready(function () {
     });
     //end on click
 
-    //remove list item on click of trash icon
-    $("#list-items").on("click", ".fa-trash", function () {
-        $(this).closest("li").remove();
-        console.log("Removing item", $(this).closest("li"));
-    });
 
     /*
      //Comment back in if errors should be thrown when entering empty
