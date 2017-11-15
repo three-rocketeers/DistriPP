@@ -1,0 +1,26 @@
+{% extends "layout.html" %}
+{% block title %}Create{% endblock %}
+{% block head %}
+    {{ super() }}
+    <script src="{{ url_for('static', filename='js/listfunctions.js') }}"></script>
+{% endblock %}
+{% block content %}
+
+    <!-- TODO add validations to check for empty field -->
+    <div class="container">
+        <h1>Find Planning:</h1>
+        <form action="{{ url_for('find_planning') }}" method="post">
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon" id="basic-addon1">Planning Code</span>
+                    <input type="text" class="form-control" placeholder="Enter the code of the planning event."
+                           aria-label="plan" aria-describedby="basic-addon1" name="planning_code">
+                </div>
+                <small id="titlehelp" class="form-text text-muted"> This number should have been provided by your scrum
+                    master.
+                </small>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Find Planning</button>
+        </form>
+    </div>
+{% endblock %}
