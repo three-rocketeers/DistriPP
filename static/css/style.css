@@ -34,3 +34,5 @@ html, body {
 .storylist-item{
     padding: 5px;
 }
+
+.top-buffer { margin-top:20px; }

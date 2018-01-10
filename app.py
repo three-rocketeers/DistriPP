@@ -51,6 +51,7 @@ def join():
 @app.route('/find_planning', methods=['POST'])
 def find_planning():
     planning_code = request.form['planning_code']
+    username = request.form['username']
     # Database calls
     mariadb_connection = get_db_connection()
     try:
@@ -66,9 +67,9 @@ def find_planning():
         # read the stories for that planning event
         query = "Select Name from stories where PlanningID = '" + planning_code + "'"
         cursor.execute(query)
-        stories = cursor.fetchall()
+        stories = list(sum(cursor.fetchall(), ()))
 
-        return render_template('estimate_main.html', planning_title=planning_title, stories=stories)
+        return render_template('estimate_main.html', planning_title=planning_title, stories=stories, username=username)
 
     finally:
         mariadb_connection.close()
