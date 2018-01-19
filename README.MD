@@ -18,6 +18,7 @@ MariaDB 10.x
 ## Authors
 
 * **BeStof** - *Initial work*
+* **b3n5ch**
 
 ## License
 
