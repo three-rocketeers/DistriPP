@@ -25,14 +25,22 @@ html, body {
     box-shadow: none; /* You may want to include this as bootstrap applies these styles too */
 }
 
-.scrollable-storylist{
+.scrollable-storylist {
     min-height: 150px;
     max-height: 150px;
-    overflow-y:scroll;
+    overflow-y: scroll;
 }
 
-.storylist-item{
+.storylist-item {
     padding: 5px;
 }
 
-.top-buffer { margin-top:20px; }
+.top-buffer {
+    margin-top: 20px;
+}
+
+.sidebar {
+    height: 100vh;
+    padding-bottom: 60px;
+    background-color: #f5f5f5;
+}
