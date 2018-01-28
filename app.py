@@ -80,5 +80,35 @@ def get_db_connection():
                            database=db_name)
 
 
+@app.route('/view')
+def view():
+    return render_template('pwcheck_viewstories.html')
+
+
+@app.route('/managing_view', methods=['POST'])
+def managing_view():
+    # TODO Create a password protected view so only the SM can watch the result
+    # Check whether the user is the sm or not.
+    uuid_str = str(uuid.uuid4())
+    username = request.form['username']
+    password = request.form['password']
+
+    # Database call
+    mariadb_connection = get_db_connection()
+    try:
+        cursor = mariadb_connection.cursor(buffered=True)
+        queryUsername = "SELECT username FROM passwordSM where username = '" + username + "'"
+        cursor.execute(queryUsername)
+        unPresent = cursor.fetchone()[0]
+        queryPassword = "SELECT password FROM passwordSM where password = '" + password + "'"
+        cursor.execute(queryPassword)
+        pwPresent = cursor.fetchone()[0]
+    finally:
+        mariadb_connection.close()
+
+    if unPresent and pwPresent:
+        return render_template('managing_view.html')
+    #TODO create a redirect-side for when password is not valid or access-side is reloaded
+
 if __name__ == '__main__':
     app.run()
