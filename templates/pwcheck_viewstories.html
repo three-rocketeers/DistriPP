@@ -1,0 +1,32 @@
+{% extends "layout.html" %}
+{% block title %}Create{% endblock %}
+{% block head %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/listfunctions.js') }}"></script>
+{% endblock %}
+{% block content %}
+
+<div class="container">
+
+    <h1>Access Verification</h1>
+    <form action="{{ url_for('managing_view') }}" method="post">
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">Username</span>
+                <input type="text" class="form-control" placeholder="Username"
+                       aria-label="plan" aria-describedby="basic-addon1" name="username">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="input-group">
+                <span class="input-group-addon" id="basic-addon1">Password</span>
+                <input type="password" class="form-control" placeholder="Enter a password." aria-label="Username"
+                       aria-describedby="basic-addon1" name="password">
+            </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Submit</button>
+
+    </form>
+</div>
+{% endblock %}
