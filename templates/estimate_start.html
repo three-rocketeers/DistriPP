@@ -1,31 +1,49 @@
 {% extends "layout.html" %}
-{% block title %}Create{% endblock %}
+{% block title %}Join{% endblock %}
 {% block head %}
     {{ super() }}
-    <script src="{{ url_for('static', filename='js/listfunctions.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/listfunctions.js') }}" xmlns="http://www.w3.org/1999/html"></script>
 {% endblock %}
 {% block content %}
 
     <!-- TODO add validations to check for empty field -->
     <div class="container">
         <h1>Find Planning:</h1>
-        <form action="{{ url_for('find_planning') }}" method="post">
+        {% if error %}
+            <div id="error" class="alert alert-danger" role="alert">{{ error }}</div>
+        {% endif %}
+        <form action="" method="post">
+            {{ form.csrf_token }}
             <div class="form-group">
                 <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">Planning Code</span>
-                    <input type="text" class="form-control" placeholder="Enter the code of the planning event."
-                           aria-label="plan" aria-describedby="basic-addon1" name="planning_code">
+                    <span class="input-group-addon" style="width: 130px">Select Planning</span>
+                    <select class="form-control {% if form.errors and 'planning' in form.errors%} is-invalid {%endif%}" name="planning">
+                        <option selected value="">Choose Planning...</option>
+                        {% for planning in planning_list %}
+                            <option value="{{ planning }}">{{ planning }}</option>
+                        {% endfor %}
+                    </select>
                 </div>
-                <small id="titlehelp" class="form-text text-muted"> This number should have been provided by your scrum
+            </div>
+            <div class="form-group">
+                <div class="input-group">
+                    <span class="input-group-addon" style="width: 130px">Password</span>
+                    <input type="password" class="form-control {% if form.errors and 'password' in form.errors%} is-invalid {%endif%}"
+                           placeholder="Enter the password for that planning meeting."
+                           aria-label="plan" aria-describedby="basic-addon1" name="password">
+                </div>
+                <small id="titlehelp" class="form-text text-muted"> This password should have been provided by your
+                    scrum
                     master.
                 </small>
-                <br>
+            </div>
+            <div class="form-group">
                 <div class="input-group">
-                    <span class="input-group-addon" id="basic-addon1">Name</span>
-                    <input type="text" class="form-control" placeholder="Enter your name."
-                           aria-label="plan" aria-describedby="basic-addon1" name="username">
+                    <span class="input-group-addon" style="width: 130px">Name</span>
+                    <input type="text" class="form-control {% if form.errors and 'name' in form.errors%} is-invalid {%endif%}" placeholder=
+                        "Enter your name."
+                           aria-label="plan" aria-describedby="basic-addon1" name="name">
                 </div>
-
             </div>
             <button type="submit" class="btn btn-primary btn-block">Find Planning</button>
         </form>
