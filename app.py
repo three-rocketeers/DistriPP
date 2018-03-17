@@ -1,10 +1,13 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, url_for, redirect
 import uuid
 import mysql.connector as mariadb
 
 from config import db_host, db_port, db_user, db_password, db_name
 
+from forms import JoinForm
+
 app = Flask(__name__)
+app.secret_key = '1d94e52c-1c89-4515-b87a-f48cf3cb7f0b'
 
 
 @app.route('/')
@@ -43,33 +46,40 @@ def create_planning():
     return render_template('created.html', planning_id=uuid_str)
 
 
-@app.route('/join')
+@app.route('/join', methods=['GET', 'POST'])
 def join():
-    return render_template('estimate_start.html')
-
-
-@app.route('/find_planning', methods=['POST'])
-def find_planning():
-    planning_code = request.form['planning_code']
-    username = request.form['username']
-    # Database calls
     mariadb_connection = get_db_connection()
     try:
+        server_error = None
         cursor = mariadb_connection.cursor(buffered=True)
-        # TODO Statements here are prone to sql injection. Parametrized attempts did not work. Check out what might.
-        # TODO Perhaps this will work without issue when SQLALchemy is implemented.
+        form = JoinForm()
+        if form.validate_on_submit():
+            planning_name = request.form['planning']
+            password = request.form['password']
+            username = request.form['name']
 
-        # read the planning title
-        query = "Select Title from planning where ID = '" + planning_code + "'"
+            # read the planning title
+            query = "Select Password, ID from planning where Title = '" + planning_name + "'"
+            cursor.execute(query)
+            password_db = cursor.fetchone()[0]
+            if password_db != password:
+                server_error = "Password is incorrect for the selected planning meeting."
+                user = username
+            else:
+                planning_id = cursor.fetchone()[0]
+                # read the stories for that planning event
+                query = "Select Name from stories where PlanningID = '" + planning_id + "'"
+                cursor.execute(query)
+                stories = list(sum(cursor.fetchall(), ()))
+
+                return render_template('estimate_main.html', planning_title=planning_name, stories=stories,
+                                       username=username)
+
+        # fetch the list of planning meetings
+        query = "Select Title from planning"
         cursor.execute(query)
-        planning_title = cursor.fetchone()[0]
-
-        # read the stories for that planning event
-        query = "Select Name from stories where PlanningID = '" + planning_code + "'"
-        cursor.execute(query)
-        stories = list(sum(cursor.fetchall(), ()))
-
-        return render_template('estimate_main.html', planning_title=planning_title, stories=stories, username=username)
+        planning_list = list(sum(cursor.fetchall(), ()))
+        return render_template('estimate_start.html', planning_list=planning_list, error=server_error, form=form)
 
     finally:
         mariadb_connection.close()
