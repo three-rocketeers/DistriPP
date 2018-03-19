@@ -1,5 +1,3 @@
-CREATE DATABASE `distripp`;
-
 CREATE TABLE `planning` (
 	`ID` VARCHAR(50) NOT NULL,
 	`Title` VARCHAR(200) NOT NULL,

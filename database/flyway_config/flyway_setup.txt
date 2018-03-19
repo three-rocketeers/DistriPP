@@ -1,0 +1,12 @@
+Steps to setup flyway:
+
+1. Download the Flyway community edition (command line version) from https://flywaydb.org/download/community
+2. Extract flyway to location on the hard drive (e.g. c:/flyway)
+3. Take the flyway.conf file from the repo and change the lines for flyway.url, flyway.user and flyway.password to match your local setup
+4. Change the flyway.locations to match the migration folder from the repo (e.g. flyway.locations=filesystem:C:\Users\Ben\PycharmProjects\DistriPP\database\migration)
+5. Copy this file to the conf folder in the flyway installation directory (e.g. c:/flyway/conf) and replace the existing file
+6. Open CMD and navigate to the flyway installation folder
+7. Run flyway clean to clean any previous databases.
+8. Run flyway migrate to migrate to the newest version
+
+For following migrations only repeat step 8
