@@ -24,8 +24,7 @@ def create():
 # TODO implement logic to check whether stories are actually in jira
 @app.route('/create_submit', methods=['POST'])
 def create_planning():
-    # Gather and generate data
-    uuid_str = str(uuid.uuid4())
+    # Gather data from form
     title = request.form['title']
     password = request.form['passwordbox']
     # Removes duplicate stories from list
@@ -35,15 +34,20 @@ def create_planning():
     mariadb_connection = get_db_connection()
     try:
         cursor = mariadb_connection.cursor(buffered=True)
-        cursor.execute("INSERT INTO planning VALUES (%s, %s, %s)", (uuid_str, title, password))
+        cursor.execute("INSERT INTO planning (Title,Password) VALUES (%s, %s)", (title, password))
+        # TODO there must be a better way to get the ID of the last inserted item.
+        query = "Select ID from planning where Title = '" + title + "'"
+        cursor.execute(query)
+        planning_id = cursor.fetchone()[0]
+
         for story in stories:
-            cursor.execute("INSERT INTO stories (Name,PlanningID) VALUES (%s, %s)", (story, uuid_str))
+            cursor.execute("INSERT INTO stories (Name,PlanningID) VALUES (%s, %s)", (story, planning_id))
         mariadb_connection.commit()
     finally:
         mariadb_connection.close()
 
     # Return resultpage
-    return render_template('created.html', planning_id=uuid_str)
+    return render_template('created.html', planning_name = title)
 
 
 @app.route('/join', methods=['GET', 'POST'])
