@@ -6,8 +6,8 @@ This will allow for teams to do estimates in a distribute way.
 
 Clone Git Repo.
 Install MariaDB.
-Run the V1_init.sql file in your SQL editor of choice (flyway coming in future release)
-Change the config.py file to match your setup
+Check the flyway setup file to set up flyway and migrate database.
+Change the config.py file to match your setup.
 Run app.py
 
 ### Prerequisites
