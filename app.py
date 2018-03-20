@@ -65,14 +65,13 @@ def join():
             # read the planning title
             query = "Select Password, ID from planning where Title = '" + planning_name + "'"
             cursor.execute(query)
-            password_db = cursor.fetchone()[0]
+            password_db, planning_id = cursor.fetchone()
             if password_db != password:
                 server_error = "Password is incorrect for the selected planning meeting."
                 user = username
             else:
-                planning_id = cursor.fetchone()[0]
                 # read the stories for that planning event
-                query = "Select Name from stories where PlanningID = '" + planning_id + "'"
+                query = "Select Name from stories where PlanningID = '" + str(planning_id) + "'"
                 cursor.execute(query)
                 stories = list(sum(cursor.fetchall(), ()))
 
