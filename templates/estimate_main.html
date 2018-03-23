@@ -5,6 +5,7 @@
     <script src="{{ url_for('static', filename='js/estimatefunctions.js') }}"></script>
 {% endblock %}
 {% block content %}
+    <meta id="global-data" data-username="{{username}}" data-planning="{{planning_title}}">
     <div class="container">
         <!-- Nav tabs -->
         <div class="row">
@@ -15,7 +16,7 @@
                     </li>
                     {% for story in stories %}
                         <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#{{ story }}" role="tab">{{ story }}</a>
+                            <a class="nav-link" data-toggle="tab" href="#{{ story.name }}" role="tab">{{ story.name }}</a>
                         </li>
                     {% endfor %}
                 </ul>
@@ -24,12 +25,13 @@
                 <!-- Tab panes -->
                 <div class="tab-content">
                     <div class="tab-pane active" id="home" role="tabpanel">
-                        <!--<h1>Hello {{ username }}.</h1>
+                        <h1>Hello {{ username }}.</h1>
                         <p>Please click on a story on the left to start estimating.</p>
-                        <h2>Overview:</h2> -->
-                        <table class="table">
+                        <h3>Overview:</h3>
+                        <table class="table" id="estimates_table">
                             <thead class="thead-inverse">
                             <tr>
+                                <th style="display:none">ID</th>
                                 <th>US ID</th>
                                 <th>Estimate</th>
                                 <th>Comment</th>
@@ -38,32 +40,33 @@
                             <tbody>
                             {% for story in stories %}
                                 <tr>
-                                    <td>{{ story }}</td>
-                                    <td id="{{ story }}_estimate_cell">-</td>
-                                    <td id="{{ story }}_comment_cell"></td>
+                                    <td style="display:none" id="{{ story.name }}_id">{{ story.id }}</td>
+                                    <td id="{{ story.name }}_name">{{ story.name }}</td>
+                                    <td id="{{ story.name }}_estimate_cell">-</td>
+                                    <td id="{{ story.name }}_comment_cell"></td>
                                 </tr>
                             {% endfor %}
                             </tbody>
                         </table>
-                        <button type="button" class="btn btn-primary btn-lg btn-block">Submit Estimates</button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" id="submit_estimates">Submit Estimates</button>
                     </div>
                     {% for story in stories %}
-                        <div class="tab-pane" id="{{ story }}" role="tabpanel">
+                        <div class="tab-pane" id="{{ story.name }}" role="tabpanel">
                             <div class="row top-buffer">
                                 <div class="col-sm-9">
                                     <div class="embed-responsive embed-responsive-1by1">
                                         <iframe class="embed-responsive-item"
-                                                src="https://www.atlassian.com/">Content could not be displayed.
+                                                src="https://www.google.com/">Content could not be displayed.
                                         </iframe>
                                     </div>
                                 </div>
                                 <div class="col-sm-3">
                                     <div class="form-group">
                                         <label for="{{ story }}_comments">Comment</label>
-                                        <textarea class="form-control commentbox" id="{{ story }}_comment" rows="7"></textarea>
+                                        <textarea class="form-control commentbox" id="{{ story.name }}_comment" rows="7"></textarea>
                                         <br>
                                         <label for="{{ story }}_estimate">Estimate</label>
-                                        <select class="form-control estimatebox" id="{{ story }}_estimate">
+                                        <select class="form-control estimatebox" id="{{ story.name }}_estimate">
                                             <option>-</option>
                                             <option>1</option>
                                             <option>4</option>
