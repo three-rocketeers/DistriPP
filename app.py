@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, url_for, redirect
+from flask import Flask, request, render_template, url_for, redirect, json
 import uuid
 import mysql.connector as mariadb
 
@@ -47,7 +47,7 @@ def create_planning():
         mariadb_connection.close()
 
     # Return resultpage
-    return render_template('created.html', planning_name = title)
+    return render_template('created.html', planning_name=title)
 
 
 @app.route('/join', methods=['GET', 'POST'])
@@ -71,9 +71,12 @@ def join():
                 user = username
             else:
                 # read the stories for that planning event
-                query = "Select Name from stories where PlanningID = '" + str(planning_id) + "'"
+                query = "Select ID, Name from stories where PlanningID = '" + str(planning_id) + "'"
                 cursor.execute(query)
-                stories = list(sum(cursor.fetchall(), ()))
+                result = cursor.fetchall()
+                stories = []
+                for row in result:
+                    stories.append({'id': row[0], 'name': row[1]})
 
                 return render_template('estimate_main.html', planning_title=planning_name, stories=stories,
                                        username=username)
@@ -86,6 +89,33 @@ def join():
 
     finally:
         mariadb_connection.close()
+
+
+@app.route('/save', methods=['POST'])
+def save_estimates():
+    data = request.get_json()["data"]
+    user = request.get_json()["user"]
+    mariadb_connection = get_db_connection()
+    try:
+        for estimate in data:
+            story_id = estimate["storyid"]
+            comment = estimate["comment"]
+            estimate = estimate["estimate"]
+            cursor = mariadb_connection.cursor(buffered=True)
+            cursor.execute("INSERT INTO estimates (User,Estimate,Comment,StoryID) VALUES (%s, %s, %s, %s)",
+                           (user, estimate, comment, story_id))
+        mariadb_connection.commit()
+        return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+    except:
+        return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
+    finally:
+        mariadb_connection.close()
+
+
+@app.route('/saved', methods=['GET'])
+def saved():
+    planning = request.args.get('planning')
+    return render_template('estimated.html', planning_name=planning)
 
 
 def get_db_connection():

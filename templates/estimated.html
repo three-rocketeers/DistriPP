@@ -1,0 +1,11 @@
+{% extends "layout.html" %}
+{% block title %}Saved{% endblock %}
+{% block content %}
+    <div class="container">
+
+        <h1>Estimations saved!</h1>
+        <p>Your estimations for planning meeting {{ planning_name }} were successfully saved in the database.</p>
+        <a class="btn btn-primary" href="{{ url_for('start') }}" role="button">Continue</a>
+    </div>
+
+{% endblock %}
