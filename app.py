@@ -1,8 +1,9 @@
-from flask import Flask, request, render_template, url_for, redirect, json
-import uuid
+from flask import Flask, request, render_template, url_for, redirect, json, jsonify
+import requests
 import mysql.connector as mariadb
 
-from config import db_host, db_port, db_user, db_password, db_name
+from config import db_host, db_port, db_user, db_password, db_name, jira_base_url, jira_pass, jira_rest_url, \
+    jira_rest_version, jira_user
 
 from forms import JoinForm
 
@@ -17,7 +18,8 @@ def start():
 
 @app.route('/create')
 def create():
-    return render_template('create.html')
+    projects = get_projects()
+    return render_template('create.html', projects=projects)
 
 
 # TODO use SQLALCHEMY for database calls
@@ -116,6 +118,40 @@ def save_estimates():
 def saved():
     planning = request.args.get('planning')
     return render_template('estimated.html', planning_name=planning)
+
+
+@app.route('/get_projects', methods=['GET'])
+def get_projects():
+    response = requests.get(jira_base_url + jira_rest_url + jira_rest_version + "/project",
+                            auth=(jira_user, jira_pass))
+    data = response.json()
+    projects = {}
+    for project in data:
+        projects[project['key']] = project['name']
+    return projects
+
+
+@app.route('/get_sprints', methods=['GET'])
+def get_sprints():
+    project = request.args.get('project')
+    url = jira_base_url + jira_rest_url + jira_rest_version + "/search"
+    data = {"jql": "project = " + project + " and sprint in (openSprints(), futureSprints()) and issuetype = Story",
+            "maxResults": 200, "fields": ["customfield_10000", "summary"]}
+    response = requests.post(url, json=data, auth=(jira_user, jira_pass))
+    data = response.json()
+    result = {}
+    for issue in data['issues']:
+        sprints = issue['fields']['customfield_10000']
+        sprint_name = ""
+        for sprint in sprints:
+            splitted = sprint.split(",")
+            if splitted[2][6:] in ["ACTIVE", "FUTURE"]:
+                sprint_name = splitted[3][5:]
+        if sprint_name in result:
+            result[sprint_name].append(issue['key'])
+        else:
+            result[sprint_name] = [issue['key']]
+    return jsonify(result=result)
 
 
 def get_db_connection():

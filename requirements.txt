@@ -4,3 +4,4 @@ Werkzeug
 mysql-connector==2.1.6
 Flask-WTF
 WTForms
+requests
