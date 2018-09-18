@@ -78,7 +78,14 @@ def join():
                 result = cursor.fetchall()
                 stories = []
                 for row in result:
-                    stories.append({'id': row[0], 'name': row[1]})
+                    story_id = row[0]
+                    name = row[1]
+                    response = requests.get(jira_base_url + jira_rest_url + jira_rest_version + "/issue/" + str(name) + "?fields=description,summary",
+                                            auth=(jira_user, jira_pass))
+                    data = response.json()
+                    description = data["fields"]["description"]
+                    summary = data["fields"]["summary"]
+                    stories.append({'id': story_id, 'name': name, "description": description, "summary": summary })
 
                 return render_template('estimate_main.html', planning_title=planning_name, stories=stories,
                                        username=username)
