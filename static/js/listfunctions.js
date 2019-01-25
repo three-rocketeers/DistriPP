@@ -1,38 +1,24 @@
 $(document).ready(function () {
 
-    $("#project").on('change', function () {
-        //clear all previous entries from the sprint and story lists
-        $('#sprint').find('option').remove();
-        $('#list-items').find('.storylist-item').remove();
-        //clear the localstorage if it was set
-        localStorage.setItem("sprint_data", "");
-        if ($("#project").val() != "") {
-            $.getJSON($SCRIPT_ROOT + '/get_sprints', {
-                project: $("#project").val()
-            }, function (data) {
-                localStorage.setItem("sprint_data", JSON.stringify(data.result))
-                $('#sprint')
-                    .append($("<option></option>")
-                        .attr("value", "")
-                        .text("Select a sprint."));
-                $.each(data.result, function (key, value) {
-                    $('#sprint')
-                        .append($("<option></option>")
-                            .attr("value", key)
-                            .text(key));
-                });
-            });
-        }
-    });
-
     $("#sprint").on('change', function () {
         $('#list-items').find('.storylist-item').remove();
         if ($("#sprint").val() != "") {
-            var sprint_data = JSON.parse(localStorage.getItem("sprint_data"));
-            $.each(sprint_data[$("#sprint").val()], function(index, story){
-                $('#list-items').append('<div class="input-group storylist-item"> <input type="text" class="form-control" name="stories" value="' + story + '" aria-label="story"> <span class="input-group-btn" > <button class="btn btn-secondary"  id="remove" type="button"><i class="fa fa-trash" aria-hidden="true"></i></button> </span> </div>');
-
-            });
+            $.ajax({
+                type: "GET",
+                cache: false,
+                data: {sprintid: $("#sprint").val()},
+                url: $SCRIPT_ROOT + "/get_stories",
+                dataType: "json",
+                success: function (data) {
+                    $.each(data.data, function (index, story) {
+                        $('#list-items').append('<div class="input-group storylist-item"> <input type="text" class="form-control" name="stories" value="' + story + '" aria-label="story"> <span class="input-group-btn" > <button class="btn btn-secondary"  id="remove" type="button"><i class="fa fa-trash" aria-hidden="true"></i></button> </span> </div>');
+                    });
+                },
+                error: function (jqXHR) {
+                    alert("error: " + jqXHR.status);
+                    console.log(jqXHR);
+                }
+            })
         }
     });
 
