@@ -13,8 +13,9 @@ This will allow for teams to do estimates in a distributed way.
 
 ### Prerequisites
 
-MariaDB 10.x
-Mockoon
+* MariaDB 10.x
+* Mockoon
+* Flyway CMD
 
 
 ## Authors
