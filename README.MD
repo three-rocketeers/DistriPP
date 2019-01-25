@@ -1,6 +1,6 @@
 # Distributed Planning Poker
 
-This will allow for teams to do estimates in a distribute way.
+This will allow for teams to do estimates in a distributed way.
 
 ## Getting Started
 
