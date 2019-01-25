@@ -7,18 +7,20 @@ This will allow for teams to do estimates in a distribute way.
 Clone Git Repo.
 Install MariaDB.
 Check the flyway setup file to set up flyway and migrate database.
-Change the config.py file to match your setup.
+Change the config.py file to match your setup (leave jira setting intact)
+Open Mockoon and imort the mockoon_distripp.json
 Run app.py
 
 ### Prerequisites
 
 MariaDB 10.x
+Mockoon
 
 
 ## Authors
 
-* **BeStof** - *Initial work*
-* **b3n5ch**
+* **BeStof**
+* **b3n5ch** 
 
 ## License
 
