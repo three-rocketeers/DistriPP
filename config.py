@@ -1,13 +1,13 @@
 # database
-db_host = "127.0.0.1"
-db_port = 3306
-db_user = "root"
-db_password = "root"
-db_name = "distripp"
+db_host = 'db'
+db_port = 5432
+db_user = 'distripp'
+db_password = 'bananas2323'
+db_name = 'distripp'
 
 
 # JIRA
-jira_base_url = "http://localhost:3535"
+jira_base_url = "http://host.docker.internal:3535"
 jira_board = 3111
 jira_rest_sprints = "/jira/rest/greenhopper/latest/sprintquery/" + str(jira_board) +"?includeHistoricSprints=true&includeFutureSprints=true"
 jira_rest_sprint_overview = "/jira/rest/greenhopper/latest/rapid/charts/sprintreport?rapidViewId=" + str(jira_board) + "&sprintId="

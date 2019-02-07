@@ -1,6 +1,6 @@
 from flask import Flask, request, render_template, url_for, redirect, json, jsonify
 import requests
-import mysql.connector as mariadb
+import psycopg2
 
 from config import db_host, db_port, db_user, db_password, db_name, jira_base_url, jira_pass, jira_user, \
     jira_rest_sprints, jira_rest_issue, jira_rest_sprint_overview
@@ -33,20 +33,17 @@ def create_planning():
     stories = list(set(request.form.getlist('stories')))
 
     # Database calls
-    mariadb_connection = get_db_connection()
+    connection = get_db_connection()
     try:
-        cursor = mariadb_connection.cursor(buffered=True)
-        cursor.execute("INSERT INTO planning (Title,Password) VALUES (%s, %s)", (title, password))
-        # TODO there must be a better way to get the ID of the last inserted item.
-        query = "Select ID from planning where Title = '" + title + "'"
-        cursor.execute(query)
+        cursor = connection.cursor()
+        cursor.execute("INSERT INTO planning (title,password) VALUES (%s, %s) RETURNING id;", (title, password))
         planning_id = cursor.fetchone()[0]
 
         for story in stories:
-            cursor.execute("INSERT INTO stories (Name,PlanningID) VALUES (%s, %s)", (story, planning_id))
-        mariadb_connection.commit()
+            cursor.execute("INSERT INTO stories (name,planningid) VALUES (%s, %s);", (story, planning_id))
+        connection.commit()
     finally:
-        mariadb_connection.close()
+        connection.close()
 
     # Return resultpage
     return render_template('created.html', planning_name=title)
@@ -54,10 +51,10 @@ def create_planning():
 
 @app.route('/join', methods=['GET', 'POST'])
 def join():
-    mariadb_connection = get_db_connection()
+    connection = get_db_connection()
     try:
         server_error = None
-        cursor = mariadb_connection.cursor(buffered=True)
+        cursor = connection.cursor()
         form = JoinForm()
         if form.validate_on_submit():
             planning_name = request.form['planning']
@@ -65,7 +62,7 @@ def join():
             username = request.form['name']
 
             # read the planning title
-            query = "Select Password, ID from planning where Title = '" + planning_name + "'"
+            query = "Select password, id from planning where title = '" + planning_name + "'"
             cursor.execute(query)
             password_db, planning_id = cursor.fetchone()
             if password_db != password:
@@ -73,7 +70,7 @@ def join():
                 user = username
             else:
                 # read the stories for that planning event
-                query = "Select ID, Name from stories where PlanningID = '" + str(planning_id) + "'"
+                query = "Select id, name from stories where planningid = '" + str(planning_id) + "'"
                 cursor.execute(query)
                 result = cursor.fetchall()
                 stories = []
@@ -91,34 +88,34 @@ def join():
                                        username=username)
 
         # fetch the list of planning meetings
-        query = "Select Title from planning"
+        query = "Select title from planning"
         cursor.execute(query)
         planning_list = list(sum(cursor.fetchall(), ()))
         return render_template('estimate_start.html', planning_list=planning_list, error=server_error, form=form)
 
     finally:
-        mariadb_connection.close()
+        connection.close()
 
 
 @app.route('/save', methods=['POST'])
 def save_estimates():
     data = request.get_json()["data"]
     user = request.get_json()["user"]
-    mariadb_connection = get_db_connection()
+    connection = get_db_connection()
     try:
         for estimate in data:
             story_id = estimate["storyid"]
             comment = estimate["comment"]
             estimate = estimate["estimate"]
-            cursor = mariadb_connection.cursor(buffered=True)
-            cursor.execute("INSERT INTO estimates (User,Estimate,Comment,StoryID) VALUES (%s, %s, %s, %s)",
+            cursor = connection.cursor()
+            cursor.execute("INSERT INTO estimates (user,estimate,comment,storyid) VALUES (%s, %s, %s, %s)",
                            (user, estimate, comment, story_id))
-        mariadb_connection.commit()
+        connection.commit()
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
     except:
         return json.dumps({'success': False}), 400, {'ContentType': 'application/json'}
     finally:
-        mariadb_connection.close()
+        connection.close()
 
 
 @app.route('/saved', methods=['GET'])
@@ -147,9 +144,9 @@ def get_stories():
 
 
 def get_db_connection():
-    return mariadb.connect(host=db_host, port=db_port, user=db_user, password=db_password,
-                           database=db_name)
+    return psycopg2.connect(host=db_host, user=db_user, password=db_password,
+                           dbname=db_name)
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(host='0.0.0.0')

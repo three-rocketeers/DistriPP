@@ -1,0 +1,13 @@
+version: '2'
+services:
+  web:
+    build: .
+    ports:
+    - "5000:5000"
+  db:
+    image: postgres
+    ports:
+    - "5432:5432"
+    environment:
+      POSTGRES_USER: "distripp"
+      POSTGRES_PASSWORD: "bananas2323"
