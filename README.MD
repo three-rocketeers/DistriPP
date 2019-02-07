@@ -5,23 +5,23 @@ This will allow for teams to do estimates in a distributed way.
 ## Getting Started
 
 * Clone Git Repo.
-* Install MariaDB.
-* Check the flyway setup file to set up flyway and migrate database.
-* Change the config.py file to match your setup (leave Jira settings intact)
-* Open Mockoon and imort the mockoon_distripp.json
-* Run app.py
+* Install Docker
+* Run docker-compose up in Terminal. (docker-compose up --build for rebuilding)
+* Run the migration_postgres scripts on the database in the container
+* Open Mockoon, import the mockoon_distripp.json and run the mock server on port 3535
+* Optional <Pycharm>: configure the venv to target the remote venv of the docker container
+  How-To: https://blog.jetbrains.com/pycharm/2017/03/docker-compose-getting-flask-up-and-running/
+* Open a Browser and navigate to http.//0.0.0.0:5000/
 
 ### Prerequisites
 
-* MariaDB 10.x (https://mariadb.org/download/)
+* Docker (https://www.docker.com/products/docker-desktop)
 * Mockoon (https://mockoon.com/#download)
-* Flyway (https://flywaydb.org/documentation/commandline/#download-and-installation)
 
 
 ## Authors
 
 * **BeStof**
-* **b3n5ch** 
 
 ## License
 
