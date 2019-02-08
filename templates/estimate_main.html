@@ -4,6 +4,7 @@
     {{ super() }}
     <script src="{{ url_for('static', filename='js/estimatefunctions.js') }}"></script>
 {% endblock %}
+{% block nav_join %}active{% endblock %}
 {% block content %}
     <meta id="global-data" data-username="{{username}}" data-planning="{{planning_title}}">
     <div class="container">

@@ -4,10 +4,10 @@
     {{ super() }}
     <script src="{{ url_for('static', filename='js/listfunctions.js') }}"></script>
 {% endblock %}
+{% block nav_create %}active{% endblock %}
 {% block content %}
 
     <div class="container">
-
         <h1>Create Planning</h1>
         <p>Fill out all the boxes to create a planning event.</p>
         <form action="{{ url_for('create_planning') }}" method="post">

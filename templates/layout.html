@@ -28,8 +28,23 @@
     {% endblock %}
 </head>
 <body>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+    <img src="{{ url_for('static', filename='img/rocket.png') }}" width="30" height="30" alt="">
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+    <div class="navbar-nav">
+      <a class="nav-item nav-link {% block nav_home %}{% endblock %}" href="{{ url_for('start') }}">Home</a>
+      <a class="nav-item nav-link {% block nav_create %}{% endblock %}" href="{{ url_for('create') }}">Create</a>
+      <a class="nav-item nav-link {% block nav_join %}{% endblock %}" href="{{ url_for('join') }}">Join</a>
+      <a class="nav-item nav-link disabled {% block nav_view %}{% endblock %}" href="#">View</a>
+    </div>
+  </div>
+</nav>
 <div id="content">{% block content %}{% endblock %}</div>
-<!-- TODO footer not sticking to bottom of pager... -->
 <footer class="footer">
     {% block footer %}
         <div class="container">

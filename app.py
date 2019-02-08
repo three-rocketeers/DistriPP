@@ -23,7 +23,6 @@ def create():
 
 
 # TODO use SQLALCHEMY for database calls
-# TODO implement logic to check whether stories are actually in jira
 @app.route('/create_submit', methods=['POST'])
 def create_planning():
     # Gather data from form
@@ -108,7 +107,7 @@ def save_estimates():
             comment = estimate["comment"]
             estimate = estimate["estimate"]
             cursor = connection.cursor()
-            cursor.execute("INSERT INTO estimates (user,estimate,comment,storyid) VALUES (%s, %s, %s, %s)",
+            cursor.execute("INSERT INTO estimates (est_user,estimate,est_comment,storyid) VALUES (%s, %s, %s, %s)",
                            (user, estimate, comment, story_id))
         connection.commit()
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}

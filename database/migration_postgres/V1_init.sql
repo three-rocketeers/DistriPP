@@ -30,9 +30,9 @@ create table estimates
 	id serial not null
 		constraint estimates_pk
 			primary key,
-	"User" varchar(50) not null,
-	estimate integer not null,
-	comment varchar(500),
+	est_user varchar(50) not null,
+	estimate varchar(3),
+	est_comment varchar(500),
 	storyid integer not null
 		constraint estimates_stories_id_fk
 			references stories

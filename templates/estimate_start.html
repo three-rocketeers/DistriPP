@@ -4,6 +4,7 @@
     {{ super() }}
     <script src="{{ url_for('static', filename='js/listfunctions.js') }}" xmlns="http://www.w3.org/1999/html"></script>
 {% endblock %}
+{% block nav_join %}active{% endblock %}
 {% block content %}
     
     <div class="container">
