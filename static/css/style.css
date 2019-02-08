@@ -15,9 +15,10 @@ html, body {
     background-color: #f5f5f5;
 }
 
-.jumbotron {
+.logo {
     background: #1c1c1c url("../img/banner.png") no-repeat center;
     min-height: 250px;
+    margin-bottom: 20px;
 }
 
 .no-border {
