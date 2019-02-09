@@ -1,3 +1,5 @@
+from statistics import median
+from collections import Counter
 from flask import Flask, request, render_template, url_for, redirect, json, jsonify
 import requests
 import psycopg2
@@ -120,9 +122,11 @@ def view():
                 result = {}
                 for row in data:
                     if row[0] in result:
-                        result[row[0]].append({"estimate": row[1], "user": row[2], "comment": row[3]})
+                        result[row[0]]["estimates"].append({"estimate": row[1], "user": row[2], "comment": row[3]})
                     else:
-                        result[row[0]] = [{"estimate": row[1], "user": row[2], "comment": row[3]}]
+                        result[row[0]] = {"estimates": [{"estimate": row[1], "user": row[2], "comment": row[3]}]}
+                for key, value in result.items():
+                    result[key]["overall_est"] = get_estimate_string(value["estimates"])
                 return render_template('view_main.html', data=result, planning_title=planning_name)
 
         # fetch the list of planning meetings
@@ -183,6 +187,18 @@ def get_stories():
 
 def get_db_connection():
     return psycopg2.connect(host=db_host, user=db_user, password=db_password, dbname=db_name)
+
+
+def get_estimate_string(estimates):
+    est_num = []
+    for est in estimates:
+        if est["estimate"].isdigit():
+            est_num.append(int(est["estimate"]))
+    all_identical = est_num[1:] == est_num[:-1]
+    result = str(Counter(est_num).most_common(1)[0][0])
+    if not all_identical:
+        result += " (!)"
+    return result
 
 
 if __name__ == '__main__':

@@ -2,15 +2,15 @@
 {% block title %}Home{% endblock %}
 {% block nav_view %}active{% endblock %}
 {% block content %}
-    <h1>View estimates for {{ planning_title }}</h1>
     <div class="container">
+    <h1>View estimates for {{ planning_title }}</h1>
         <div class="row">
             {% for key, value in data.items() %}
                 <div class="col-sm-4">
-                    <div class="card">
+                    <div class="card text-center">
+                        <div class="card-header">{{ key }}</div>
                         <div class="card-body">
-                            <h5 class="card-title">{{ key }}</h5>
-                            <p class="card-text">Average Number will be displayed here.</p>
+                            <h3 class="card-title">{{ value.overall_est }}</h3>
                             <button type="button" data-toggle="modal" data-target="#{{ key }}_modal" class="btn btn-primary">View estimates</button>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    {% for est in value %}
+                                    {% for est in value.estimates %}
                                         <tr>
                                             <td>{{ est.user }}</td>
                                             <td>{{ est.estimate }}</td>
