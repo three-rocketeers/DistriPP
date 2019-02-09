@@ -2,8 +2,7 @@
 {% block title %}Home{% endblock %}
 {% block nav_home %}active{% endblock %}
 {% block content %}
-    <div class="logo">
-    </div>
+    <div class="logo"></div>
     <div class="container">
         <div class="row equal">
             <div class="col-sm-4">
@@ -33,7 +32,7 @@
                 <p><a class="btn btn-block btn-secondary" href="{{ url_for('join') }}" role="button">Join</a></p>
             </div>
             <div class="col-sm-4">
-                <p><a class="btn btn-block btn-secondary" href="#" role="button">View</a></p>
+                <p><a class="btn btn-block btn-secondary" href="{{ url_for('view') }}" role="button">View</a></p>
             </div>
         </div>
     </div><!-- /container -->

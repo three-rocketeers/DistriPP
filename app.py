@@ -5,7 +5,7 @@ import psycopg2
 from config import db_host, db_port, db_user, db_password, db_name, jira_base_url, jira_pass, jira_user, \
     jira_rest_sprints, jira_rest_issue, jira_rest_sprint_overview
 
-from forms import JoinForm
+from forms import JoinForm, ViewForm
 
 app = Flask(__name__)
 app.secret_key = '1d94e52c-1c89-4515-b87a-f48cf3cb7f0b'
@@ -48,6 +48,7 @@ def create_planning():
     return render_template('created.html', planning_name=title)
 
 
+# TODO make SQL calls injection safe
 @app.route('/join', methods=['GET', 'POST'])
 def join():
     connection = get_db_connection()
@@ -66,7 +67,6 @@ def join():
             password_db, planning_id = cursor.fetchone()
             if password_db != password:
                 server_error = "Password is incorrect for the selected planning meeting."
-                user = username
             else:
                 # read the stories for that planning event
                 query = "Select id, name from stories where planningid = '" + str(planning_id) + "'"
@@ -91,6 +91,45 @@ def join():
         cursor.execute(query)
         planning_list = list(sum(cursor.fetchall(), ()))
         return render_template('estimate_start.html', planning_list=planning_list, error=server_error, form=form)
+
+    finally:
+        connection.close()
+
+
+@app.route('/view', methods=['GET', 'POST'])
+def view():
+    connection = get_db_connection()
+    try:
+        server_error = None
+        cursor = connection.cursor()
+        form = ViewForm()
+        if form.validate_on_submit():
+            planning_name = str(request.form['planning'])
+            password = request.form['password']
+
+            # read the planning title
+            cursor.execute("Select password, id from planning where title = %s", [planning_name])
+            password_db, planning_id = cursor.fetchone()
+            if password_db != password:
+                server_error = "Password is incorrect for the selected planning meeting."
+            else:
+                cursor.execute(
+                    "select name, estimate, est_user,est_comment from stories inner join estimates e on stories.id = e.storyid where planningid = %s",
+                    [planning_id])
+                data = cursor.fetchall()
+                result = {}
+                for row in data:
+                    if row[0] in result:
+                        result[row[0]].append({"estimate": row[1], "user": row[2], "comment": row[3]})
+                    else:
+                        result[row[0]] = [{"estimate": row[1], "user": row[2], "comment": row[3]}]
+                return render_template('view_main.html', data=result, planning_title=planning_name)
+
+        # fetch the list of planning meetings
+        query = "Select title from planning"
+        cursor.execute(query)
+        planning_list = list(sum(cursor.fetchall(), ()))
+        return render_template('view_start.html', planning_list=planning_list, error=server_error, form=form)
 
     finally:
         connection.close()
@@ -143,8 +182,7 @@ def get_stories():
 
 
 def get_db_connection():
-    return psycopg2.connect(host=db_host, user=db_user, password=db_password,
-                           dbname=db_name)
+    return psycopg2.connect(host=db_host, user=db_user, password=db_password, dbname=db_name)
 
 
 if __name__ == '__main__':

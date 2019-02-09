@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+{% block title %}Home{% endblock %}
+{% block nav_view %}active{% endblock %}
+{% block content %}
+    <h1>View estimates for {{ planning_title }}</h1>
+    <div class="container">
+        <div class="row">
+            {% for key, value in data.items() %}
+                <div class="col-sm-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ key }}</h5>
+                            <p class="card-text">Average Number will be displayed here.</p>
+                            <button type="button" data-toggle="modal" data-target="#{{ key }}_modal" class="btn btn-primary">View estimates</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal" tabindex="-1" role="dialog" id="{{ key }}_modal">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{ key }} estimates</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <table class="table">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">User</th>
+                                        <th scope="col">Estimate</th>
+                                        <th scope="col">Comment</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    {% for est in value %}
+                                        <tr>
+                                            <td>{{ est.user }}</td>
+                                            <td>{{ est.estimate }}</td>
+                                            <td>{{ est.comment }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

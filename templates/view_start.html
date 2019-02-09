@@ -1,12 +1,7 @@
 {% extends "layout.html" %}
-{% block title %}Join{% endblock %}
-{% block head %}
-    {{ super() }}
-    <script src="{{ url_for('static', filename='js/listfunctions.js') }}" xmlns="http://www.w3.org/1999/html"></script>
-{% endblock %}
-{% block nav_join %}active{% endblock %}
+{% block title %}Home{% endblock %}
+{% block nav_view %}active{% endblock %}
 {% block content %}
-    
     <div class="container">
         <h1>Find Planning</h1>
         <p>Fill out all the boxes in order to join a planning meeting.</p>
@@ -34,19 +29,10 @@
                            aria-label="plan" aria-describedby="basic-addon1" name="password">
                 </div>
                 <small id="titlehelp" class="form-text text-muted"> This password should have been provided by your
-                    scrum
-                    master.
+                    scrum master.
                 </small>
             </div>
-            <div class="form-group">
-                <div class="input-group">
-                    <span class="input-group-addon" style="width: 130px">Name</span>
-                    <input type="text" class="form-control {% if form.errors and 'name' in form.errors%} is-invalid {%endif%}" placeholder=
-                        "Enter your name."
-                           aria-label="plan" aria-describedby="basic-addon1" name="name">
-                </div>
-            </div>
-            <button type="submit" class="btn btn-primary btn-block">Join Planning</button>
+            <button type="submit" class="btn btn-primary btn-block">View Planning</button>
         </form>
     </div>
 {% endblock %}
