@@ -1,0 +1,1 @@
+INSERT INTO distripp.planning (id, title, password) VALUES (6, 'test', 'test');
