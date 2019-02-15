@@ -2,6 +2,7 @@ Flask
 Jinja2
 Werkzeug
 psycopg2
+pony
 Flask-WTF
 WTForms
 requests
