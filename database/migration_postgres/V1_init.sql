@@ -1,42 +1,49 @@
-create database distripp
-	with owner distripp;
-
 create table planning
 (
 	id serial not null
-		constraint planning_pk
+		constraint planning_pkey
 			primary key,
-	title varchar(100) not null,
-	password varchar(50) not null
+	title text not null,
+	password text not null
 );
 
 alter table planning owner to distripp;
 
-create table stories
+create table story
 (
 	id serial not null
-		constraint stories_pk
+		constraint story_pkey
 			primary key,
-	name varchar(50) not null,
-	planningid integer not null
-		constraint stories_planning_id_fk
+	planning integer not null
+		constraint fk_story__planning
 			references planning
+				on delete cascade,
+	name text not null
 );
 
-alter table stories owner to distripp;
+alter table story owner to distripp;
 
-create table estimates
+create index idx_story__planning
+	on story (planning);
+
+create table estimate
 (
 	id serial not null
-		constraint estimates_pk
+		constraint estimate_pkey
 			primary key,
-	est_user varchar(50) not null,
-	estimate varchar(3),
-	est_comment varchar(500),
-	storyid integer not null
-		constraint estimates_stories_id_fk
-			references stories
+	story integer not null
+		constraint fk_estimate__story
+			references story
+				on delete cascade,
+	est_user text not null,
+	estimate text not null,
+	est_comment text not null
 );
 
-alter table estimates owner to distripp;
+alter table estimate owner to distripp;
+
+create index idx_estimate__story
+	on estimate (story);
+
+
 

@@ -164,5 +164,5 @@ if __name__ == '__main__':
 
 if __name__ == 'app':
     db.bind(provider='postgres', user='distripp', password='bananas2323', host='db', database='distripp', port=5432)
-    db.generate_mapping(create_tables=True)
+    db.generate_mapping(create_tables=False)
     app.run(host='0.0.0.0')
