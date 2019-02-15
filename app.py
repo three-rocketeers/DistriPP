@@ -31,22 +31,10 @@ def create_planning():
     title = request.form['title']
     password = request.form['passwordbox']
     # Removes duplicate stories from list
-    stories = list(set(request.form.getlist('stories')))
-
-    # Database calls
-    connection = get_db_connection()
-    try:
-        cursor = connection.cursor()
-        cursor.execute("INSERT INTO planning (title,password) VALUES (%s, %s) RETURNING id;", (title, password))
-        planning_id = cursor.fetchone()[0]
-
-        for story in stories:
-            cursor.execute("INSERT INTO stories (name,planningid) VALUES (%s, %s);", (story, planning_id))
-        connection.commit()
-    finally:
-        connection.close()
-
-    # Return resultpage
+    planning = db.Planning(title=title, password=password)
+    for story_name in request.form.getlist('stories'):
+        planning.stories.add(db.Story(name=story_name, planning=planning))
+    commit()
     return render_template('created.html', planning_name=title)
 
 
@@ -195,11 +183,20 @@ def get_estimate_string(estimates):
         if est["estimate"].isdigit():
             est_num.append(int(est["estimate"]))
     all_identical = est_num[1:] == est_num[:-1]
-    result = str(Counter(est_num).most_common(1)[0][0])
-    if not all_identical:
-        result += " (!)"
+    ranked = Counter(est_num).most_common(1)
+    if ranked:
+        result = str(ranked[0][0])
+        if not all_identical:
+            result += " (!)"
+    else:
+        result = '-'
     return result
 
 
 if __name__ == '__main__':
+    app.run(host='0.0.0.0')
+
+if __name__ == 'app':
+    db.bind(provider='postgres', user='distripp', password='bananas2323', host='db', database='distripp', port=5432)
+    db.generate_mapping(create_tables=True)
     app.run(host='0.0.0.0')
