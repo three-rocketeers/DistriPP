@@ -1,3 +1,5 @@
+import os
+
 from flask import Flask
 from pony.flask import Pony
 from config import config
@@ -159,7 +161,7 @@ def get_estimate_string(estimates):
 
 if __name__ == '__main__':
     db.bind(provider=app.config['PONY']['provider'], user=app.config['PONY']['user'],
-            password=app.config['PONY']['password'], host=app.config['PONY']['host'],
+            password=app.config['PONY']['password'], host=os.environ.get('DATABASE_URL') or app.config['PONY']['host'],
             database=app.config['PONY']['database'], port=app.config['PONY']['port'])
     db.generate_mapping(create_tables=app.config['PONY']['create_tables'])
     app.run(host='0.0.0.0')
