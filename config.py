@@ -11,6 +11,14 @@ config = dict(
         'create_tables': False
     },
     JIRA={
+        'base_url': 'http://www.mocky.io/v2/',
+        'rest_sprints': '5c6868213800007b1fb101a8',
+        'rest_sprint_overview': '5c6868cd380000021fb101a9?sprintId=',
+        'rest_issue': '5c6869113800002a20b101ac/',
+        'user': 'user',
+        'password': 'password'
+    },
+    JIRA_DOCKER_MOCKOON={
         'base_url': 'http://host.docker.internal:3535',
         'rest_sprints': '/jira/rest/greenhopper/latest/sprintquery/3111?includeHistoricSprints=true&includeFutureSprints=true',
         'rest_sprint_overview': '/jira/rest/greenhopper/latest/rapid/charts/sprintreport?rapidViewId=3111&sprintId=',
