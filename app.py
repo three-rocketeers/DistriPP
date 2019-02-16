@@ -158,13 +158,15 @@ def get_estimate_string(estimates):
 
 
 if __name__ == '__main__':
-    db.bind(app.config['PONY'])
-    db.generate_mapping(create_tables=True)
+    db.bind(provider=app.config['PONY']['provider'], user=app.config['PONY']['user'],
+            password=app.config['PONY']['password'], host=app.config['PONY']['host'],
+            database=app.config['PONY']['database'], port=app.config['PONY']['port'])
+    db.generate_mapping(create_tables=app.config['PONY']['create_tables'])
     app.run(host='0.0.0.0')
 
 if __name__ == 'app':
     db.bind(provider=app.config['PONY']['provider'], user=app.config['PONY']['user'],
             password=app.config['PONY']['password'], host=app.config['PONY']['host'],
             database=app.config['PONY']['database'], port=app.config['PONY']['port'])
-    db.generate_mapping(create_tables=False)
+    db.generate_mapping(create_tables=app.config['PONY']['create_tables'])
     app.run(host='0.0.0.0')

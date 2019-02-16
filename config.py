@@ -7,7 +7,8 @@ config = dict(
         'password': 'bananas2323',
         'database': 'distripp',
         'host': 'db',
-        'port': 5432
+        'port': 5432,
+        'create_tables': False
     },
     JIRA={
         'base_url': 'http://host.docker.internal:3535',
