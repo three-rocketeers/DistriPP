@@ -108,7 +108,7 @@ def save_estimates():
             comment = estimate["comment"]
             estimate = estimate["estimate"]
             story = db.Story.get(id=story_id)
-            estimate = db.Estimate(est_user=user, est_comment=comment, estimate=estimate,story=story)
+            estimate = db.Estimate(est_user=user, est_comment=comment, estimate=estimate, story=story)
             story.estimates.add(estimate)
             commit()
         return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
@@ -163,6 +163,8 @@ if __name__ == '__main__':
     app.run(host='0.0.0.0')
 
 if __name__ == 'app':
-    db.bind(provider='postgres', user='distripp', password='bananas2323', host='db', database='distripp', port=5432)
+    db.bind(provider=app.config['PONY']['provider'], user=app.config['PONY']['user'],
+            password=app.config['PONY']['password'], host=app.config['PONY']['host'],
+            database=app.config['PONY']['database'], port=app.config['PONY']['port'])
     db.generate_mapping(create_tables=False)
     app.run(host='0.0.0.0')

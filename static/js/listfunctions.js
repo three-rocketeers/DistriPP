@@ -11,7 +11,7 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (data) {
                     $.each(data.data, function (index, story) {
-                        $('#list-items').append('<div class="input-group storylist-item"> <input type="text" class="form-control" name="stories" value="' + story + '" aria-label="story"> <span class="input-group-btn" > <button class="btn btn-secondary"  id="remove" type="button"><i class="fa fa-trash" aria-hidden="true"></i></button> </span> </div>');
+                        $('#list-items').append('<div class="input-group storylist-item"> <input type="text" class="form-control" name="stories" value="' + story + '" aria-label="story"> <span class="input-group-btn" > <button class="btn btn-secondary remove-str" type="button"><i class="fa fa-trash" aria-hidden="true"></i></button> </span> </div>');
                     });
                 },
                 error: function (jqXHR) {
@@ -23,7 +23,7 @@ $(document).ready(function () {
     });
 
     //remove list item on click of trash icon
-    $(document).on('click', '#remove', function () {
+    $(document).on('click', '.remove-str', function () {
         $(this).closest("div").remove();
         console.log("Removing item", $(this).closest("div"));
     });
