@@ -1,0 +1,15 @@
+{% extends "layout.html" %}
+{% block title %}View{% endblock %}
+{% block head %}
+{{ super() }}
+<script src="{{ url_for('static', filename='js/listfunctions.js') }}"></script>
+{% endblock %}
+{% block content %}
+
+    <h1>Access for Projectmanager or Scrummaster granted</h1>
+<div>
+    <div>
+        Liste Stories (Story auswählbar), Grid mit Liste Entwickler und Bewertung der Story
+    </div>
+</div>
+{% endblock %}
